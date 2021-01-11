@@ -1,0 +1,49 @@
+import socket
+import threading
+import os
+print("                ================================================")
+print("                             UDP CHAT SERVER (RHEL8)")
+print("                ================================================")
+s=socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#serverip="192.168.0.105"
+#serverport=307
+s.bind(("192.168.0.105",307))
+print("Type here....")
+		
+def recv():
+	while True:
+		x=s.recvfrom(256)
+		data=x[0].decode()
+		print("\t\t\t\t\t\t",data)
+		if x[1][0]=="192.168.0.104":
+           		print("\t\t\t\t\t\t RECEIVED!!!")
+           		print("\t\t\t\t\t\t==============")
+           		print("\t\t\t\t\t\t  WINDOW 10")
+           		print("\t\t\t\t\t\t==============")
+		else:
+	   		print("\t\t\t\t\t\t\t\t RECEIVED!!!")
+	   		print("\t\t\t\t\t\t\t\t=============")
+	   		print("\t\t\t\t\t\t\t\t   CENTOS")
+	   		print("\t\t\t\t\t\t\t\t=============")
+		global sender_ip
+		sender_ip=x[1]
+	return sender_ip
+
+def send():
+        while True:
+                data=input()
+                data=data.encode()
+                print("Sent!!!!")
+                s.sendto(data,(sender_ip))
+                print("==============")
+                print("   RHEL8")
+                print("==============")
+x1=threading.Thread(target=recv)
+x2=threading.Thread(target=send)
+x3=threading.Thread(target=recv)
+x4=threading.Thread(target=send)
+x1.start()
+x2.start()
+x3.start()
+x4.start()
